@@ -45,13 +45,13 @@ namespace TechJobsConsole
 
             List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
 
-            foreach (Dictionary<string, string> row in AllJobs)
+            foreach (Dictionary<string, string> job in AllJobs)
             {
-                string aValue = row[column];
+                string aValue = job[column];
 
-                if (aValue.Contains(value))
+                if (aValue.IndexOf(value, System.StringComparison.OrdinalIgnoreCase) >=0)
                 {
-                    jobs.Add(row);
+                    jobs.Add(job);
                 }
             }
 
@@ -137,6 +137,36 @@ namespace TechJobsConsole
             valueBuilder.Clear();
 
             return rowValues.ToArray();
+        }
+        
+        public static List<Dictionary<string, string>> FindByValue(string searchTerm)
+        {
+
+            // load data, if not already loaded
+            LoadData();
+
+            List<Dictionary<string, string>> newJobs = new List<Dictionary<string, string>>();
+            
+        
+            foreach(Dictionary<string, string> job in AllJobs)
+            {
+                
+                //string aValue = job[searchTerm];
+                foreach (string name in job.Keys)
+                {
+                    if (job[name].IndexOf(searchTerm, System.StringComparison.OrdinalIgnoreCase) >=0 )
+                    {
+                        if (!newJobs.Contains(job))
+                        {
+                            newJobs.Add(job);
+                        }
+                    }
+
+                }
+
+
+            }
+            return newJobs;
         }
     }
 }
